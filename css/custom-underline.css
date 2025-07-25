@@ -1,0 +1,12 @@
+/* Estilos personalizados para aplicar subrayado a todos los textos de animación */
+h1, h2, h3, h4, h5, h6, p, .hero-paragraph, .about-heading, .sw-text, .paragraph-14px, .paragraph-20px, .tw-heading {
+    text-decoration: underline !important;
+    /* Asegúrate de que el subrayado tenga buen contraste */
+    text-decoration-color: currentColor !important;
+    text-decoration-thickness: 1px !important;
+}
+
+/* Mantener el estilo en los elementos fill-text pero garantizar que también estén subrayados */
+.fill-text {
+    text-decoration: underline !important;
+}
