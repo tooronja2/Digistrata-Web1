@@ -1,12 +1,28 @@
-/* Estilos personalizados para aplicar subrayado a todos los textos de animación */
-h1, h2, h3, h4, h5, h6, p, .hero-paragraph, .about-heading, .sw-text, .paragraph-14px, .paragraph-20px, .tw-heading {
+/* Forzar que todos los elementos fill-text se muestren al 100% (completamente visibles) */
+.about-heading.fill-text {
+    width: 100% !important;
+    height: 100% !important;
+    color: #fff !important;
     text-decoration: underline !important;
-    /* Asegúrate de que el subrayado tenga buen contraste */
-    text-decoration-color: currentColor !important;
+    text-decoration-color: #fff !important;
+    text-decoration-thickness: 1px !important;
+    opacity: 1 !important;
+    visibility: visible !important;
+    transform: none !important;
+}
+
+/* Mantener texto base semitransparente pero con subrayado */
+.about-heading:not(.fill-text) {
+    color: rgba(255, 255, 255, 0.1) !important;
+    text-decoration: underline !important;
+    text-decoration-color: rgba(255, 255, 255, 0.1) !important;
     text-decoration-thickness: 1px !important;
 }
 
-/* Mantener el estilo en los elementos fill-text pero garantizar que también estén subrayados */
-.fill-text {
-    text-decoration: underline !important;
+/* Asegurar que todos los elementos fill-text sean visibles sin importar la clase específica */
+.fill-text._1, .fill-text._2, .fill-text._3, .fill-text._4, .fill-text._5 {
+    width: 100% !important;
+    height: 100% !important;
+    opacity: 1 !important;
+    visibility: visible !important;
 }
