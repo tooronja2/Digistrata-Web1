@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Missing Properties Fix</title>
+    <script>
+        // Inject missing properties into parent window (main page)
+        if (window.parent && window.parent !== window) {
+            const parentDoc = window.parent.document;
+            
+            // Add missing Open Graph image
+            if (!parentDoc.querySelector('meta[property="og:image"]')) {
+                const ogImage = parentDoc.createElement('meta');
+                ogImage.setAttribute('property', 'og:image');
+                ogImage.setAttribute('content', '/images/6605598db05fae46b2baa3f2_The%20simple%20spiral%403-1728x958%20(1)%202.png');
+                parentDoc.head.appendChild(ogImage);
+            }
+            
+            // Add missing Twitter image
+            if (!parentDoc.querySelector('meta[name="twitter:image"]')) {
+                const twitterImage = parentDoc.createElement('meta');
+                twitterImage.setAttribute('name', 'twitter:image');
+                twitterImage.setAttribute('content', '/images/6605598db05fae46b2baa3f2_The%20simple%20spiral%403-1728x958%20(1)%202.png');
+                parentDoc.head.appendChild(twitterImage);
+            }
+            
+            // Fix forms missing action attribute
+            const forms = parentDoc.querySelectorAll('form[method="get"]');
+            forms.forEach(function(form) {
+                form.setAttribute('action', '#');
+                form.setAttribute('method', 'post');
+            });
+            
+            // Add required attributes to form fields with asterisk
+            const requiredFields = parentDoc.querySelectorAll('.form-text.star');
+            requiredFields.forEach(function(star) {
+                const input = star.closest('.input')?.querySelector('input');
+                if (input) {
+                    input.setAttribute('required', 'required');
+                    // Fix email field type
+                    if (input.name && input.name.toLowerCase().includes('mail')) {
+                        input.setAttribute('type', 'email');
+                    }
+                }
+            });
+            
+            console.log('Missing properties fixed for main page');
+        }
+    </script>
+</head>
+<body>
+    <p>Missing Properties Fix Applied</p>
+</body>
+</html>
