@@ -49,8 +49,14 @@ if(!document.querySelector('meta[property="og:url"]')){
 var u=document.createElement('meta');u.setAttribute('property','og:url');u.setAttribute('content',href);document.head.appendChild(u);console.log('Added og:url');
 }
 var appleIcon=document.querySelector('link[rel="apple-touch-icon"]');
-if(appleIcon&&!appleIcon.hasAttribute('type')){
+if(appleIcon){
+if(!appleIcon.hasAttribute('type')){
 appleIcon.setAttribute('type','image/png');console.log('Added apple-touch-icon type');
+}else{console.log('Apple icon already has type:',appleIcon.getAttribute('type'));}
+}else{console.log('No apple-touch-icon found');}
+var shortcutIcon=document.querySelector('link[rel="shortcut icon"]');
+if(shortcutIcon&&!shortcutIcon.hasAttribute('type')){
+shortcutIcon.setAttribute('type','image/x-icon');console.log('Added shortcut-icon type');
 }
 if(!document.querySelector('link[rel="manifest"]')){
 var manifest=document.createElement('link');manifest.setAttribute('rel','manifest');manifest.setAttribute('href','/manifest.json');document.head.appendChild(manifest);console.log('Added manifest link');
