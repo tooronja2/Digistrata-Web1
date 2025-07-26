@@ -1,0 +1,5 @@
+/* Estilos para el contacto en el footer */
+.fb-about img {
+    color: inherit;
+    filter: brightness(1.5);
+}
