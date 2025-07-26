@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script>
+// Immediate meta property injection for missing og:image and twitter:image
+(function() {
+    'use strict';
+    
+    function injectMissingMeta() {
+        try {
+            // Get the parent document (works when loaded in iframe or directly)
+            var doc = window.parent ? window.parent.document : document;
+            
+            // Only add if not already present
+            if (!doc.querySelector('meta[property="og:image"]')) {
+                var ogImg = doc.createElement('meta');
+                ogImg.setAttribute('property', 'og:image');
+                ogImg.setAttribute('content', location.protocol + '//' + location.host + '/images/6605598db05fae46b2baa3f2_The%20simple%20spiral%403-1728x958%20(1)%202.png');
+                doc.head.appendChild(ogImg);
+                console.log('✓ Injected og:image');
+            }
+            
+            if (!doc.querySelector('meta[name="twitter:image"]')) {
+                var twImg = doc.createElement('meta');
+                twImg.setAttribute('name', 'twitter:image');
+                twImg.setAttribute('content', location.protocol + '//' + location.host + '/images/6605598db05fae46b2baa3f2_The%20simple%20spiral%403-1728x958%20(1)%202.png');
+                doc.head.appendChild(twImg);
+                console.log('✓ Injected twitter:image');
+            }
+            
+            if (!doc.querySelector('meta[property="og:url"]')) {
+                var ogUrl = doc.createElement('meta');
+                ogUrl.setAttribute('property', 'og:url');
+                ogUrl.setAttribute('content', location.href);
+                doc.head.appendChild(ogUrl);
+                console.log('✓ Injected og:url');
+            }
+            
+        } catch(e) {
+            console.error('Meta injection error:', e);
+        }
+    }
+    
+    // Execute immediately
+    injectMissingMeta();
+    
+    // Also execute on load
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', injectMissingMeta);
+    }
+    
+})();
+</script>
+</head>
+<body>
+<p>Meta properties injected</p>
+</body>
+</html>
