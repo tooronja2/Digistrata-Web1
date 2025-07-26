@@ -1,85 +1,89 @@
-// Fix para el elemento sc-heading que aparece antes de tiempo
+// Fix para el elemento sc-heading - Coordinar fade-in con animación de Webflow
 (function() {
     'use strict';
     
-    function fixScHeading() {
+    function setupScHeadingAnimation() {
         const scHeading = document.querySelector('.sc-heading');
-        
         if (!scHeading) return;
         
-        // Función para verificar si el elemento debe estar visible
-        function shouldBeVisible() {
-            const rect = scHeading.getBoundingClientRect();
-            const parentSection = scHeading.closest('.sticky-discover, .sc-content');
-            
-            if (!parentSection) return false;
-            
-            const parentRect = parentSection.getBoundingClientRect();
-            const viewportHeight = window.innerHeight;
-            
-            // El elemento debe estar visible cuando su sección padre esté en cierta posición
-            return parentRect.top <= viewportHeight * 0.7;
-        }
+        // Agregar clase para control de CSS
+        scHeading.classList.add('sc-heading-controlled');
         
-        // Función para manejar la visibilidad
-        function handleVisibility() {
-            const element = document.querySelector('.sc-heading');
-            if (!element) return;
+        let animationStarted = false;
+        let animationCompleted = false;
+        
+        // Función para analizar el progreso de la animación
+        function analyzeAnimationProgress() {
+            const style = scHeading.getAttribute('style') || '';
             
-            const style = element.getAttribute('style') || '';
+            // Detectar si la animación ha comenzado
+            const hasTransform = style.includes('will-change: transform');
+            const yPosition = style.match(/translate3d\(0px,\s*([^,]+)%/);
+            const rotation = style.match(/rotateZ\(([^)]+)deg\)/);
             
-            // Si tiene estilos problemáticos de transform inline
-            if (style.includes('will-change: transform') && style.includes('translate3d(0px, 0%, 0px)')) {
-                if (shouldBeVisible()) {
-                    // Permitir que se vea y limpiar will-change
-                    element.style.willChange = 'auto';
-                } else {
-                    // Ocultarlo hasta que sea su momento
-                    element.style.opacity = '0';
-                    element.style.visibility = 'hidden';
+            if (hasTransform && yPosition && rotation) {
+                const yValue = parseFloat(yPosition[1]);
+                const rotValue = parseFloat(rotation[1]);
+                
+                // Calcular progreso basado en los valores de la animación
+                // yValue va de 140% a 0%, rotValue va de 10deg a 0deg
+                const yProgress = Math.max(0, Math.min(1, (140 - yValue) / 140));
+                const rotProgress = Math.max(0, Math.min(1, (10 - rotValue) / 10));
+                const overallProgress = (yProgress + rotProgress) / 2;
+                
+                // Aplicar opacidad basada en el progreso
+                if (overallProgress > 0) {
+                    animationStarted = true;
+                    // Fade in progresivo: de 0 a 1 según el progreso
+                    const opacity = Math.min(1, overallProgress * 1.5); // Un poco más rápido el fade
+                    scHeading.style.setProperty('opacity', opacity.toString(), 'important');
                 }
-            } else if (shouldBeVisible()) {
-                // Restaurar visibilidad cuando sea su momento
-                element.style.opacity = '';
-                element.style.visibility = '';
+                
+                // Marcar como completado cuando llegue al final
+                if (yValue <= 5 && rotValue <= 1) { // Prácticamente en posición final
+                    animationCompleted = true;
+                    scHeading.style.setProperty('opacity', '1', 'important');
+                }
+            } else if (animationStarted && !style.includes('will-change: transform')) {
+                // La animación terminó, asegurar que esté visible
+                animationCompleted = true;
+                scHeading.style.setProperty('opacity', '1', 'important');
             }
         }
         
-        // Observar cambios en los estilos
+        // Observer para cambios en el estilo
         const observer = new MutationObserver(function(mutations) {
             mutations.forEach(function(mutation) {
-                if (mutation.target.classList.contains('sc-heading') && 
-                    mutation.attributeName === 'style') {
-                    setTimeout(handleVisibility, 50);
+                if (mutation.target === scHeading && mutation.attributeName === 'style') {
+                    analyzeAnimationProgress();
                 }
             });
         });
         
-        // Observar el elemento sc-heading
         observer.observe(scHeading, {
             attributes: true,
             attributeFilter: ['style']
         });
         
-        // También observar en scroll
+        // También verificar en scroll para estar seguro
         let scrollTimeout;
         window.addEventListener('scroll', function() {
             clearTimeout(scrollTimeout);
-            scrollTimeout = setTimeout(handleVisibility, 16);
+            scrollTimeout = setTimeout(analyzeAnimationProgress, 16);
         });
         
         // Verificación inicial
-        handleVisibility();
+        analyzeAnimationProgress();
     }
     
     // Inicializar
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', fixScHeading);
+        document.addEventListener('DOMContentLoaded', setupScHeadingAnimation);
     } else {
-        fixScHeading();
+        setupScHeadingAnimation();
     }
     
-    // También ejecutar después de que Webflow se haya inicializado
-    setTimeout(fixScHeading, 1000);
+    // También ejecutar después de Webflow
+    setTimeout(setupScHeadingAnimation, 500);
     
 })();
