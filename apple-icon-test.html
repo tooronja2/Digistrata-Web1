@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Apple Touch Icon Type Test</title>
+    <script src="/js/webfont.js"></script>
+    <script src="/apple-icon-fix.js"></script>
+</head>
+<body>
+    <h1>🍎 Apple Touch Icon Type Attribute Test</h1>
+    <div id="result">Testing...</div>
+    
+    <script>
+        setTimeout(function() {
+            var appleIcon = document.querySelector('link[rel="apple-touch-icon"]');
+            var result = document.getElementById('result');
+            
+            if (appleIcon) {
+                var hasType = appleIcon.hasAttribute('type');
+                var typeValue = appleIcon.getAttribute('type');
+                
+                result.innerHTML = 
+                    '<h2>Test Results:</h2>' +
+                    '<p><strong>Apple Touch Icon Found:</strong> ✅ Yes</p>' +
+                    '<p><strong>Has type attribute:</strong> ' + (hasType ? '✅ Yes' : '❌ No') + '</p>' +
+                    '<p><strong>Type value:</strong> ' + (typeValue || 'None') + '</p>' +
+                    '<p><strong>Complete element:</strong></p>' +
+                    '<pre>' + appleIcon.outerHTML + '</pre>' +
+                    '<h3>HTML5 Validation Status:</h3>' +
+                    '<p style="color:' + (hasType ? 'green' : 'red') + '; font-weight: bold;">' +
+                    (hasType ? '✅ PASSES HTML5 validation - type attribute present' : 
+                               '❌ FAILS HTML5 validation - missing type attribute') + '</p>';
+            } else {
+                result.innerHTML = '<h2>❌ Error: Apple Touch Icon not found</h2>';
+            }
+        }, 2000);
+    </script>
+</body>
+</html>
