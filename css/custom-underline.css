@@ -70,31 +70,3 @@
     width: 20px;
     height: 20px;
 }
-
-/* Meta property injection hack */
-body:before {
-    content: "";
-    display: none;
-}
-
-/* Inject missing meta properties via CSS */
-html:after {
-    content: "";
-    display: none;
-    background-image: url('data:text/javascript,
-        (function(){
-            if(!document.querySelector("meta[property=\"og:image\"]")){
-                var m=document.createElement("meta");
-                m.setAttribute("property","og:image");
-                m.setAttribute("content","https://"+location.host+"/images/6605598db05fae46b2baa3f2_The%20simple%20spiral%403-1728x958%20(1)%202.png");
-                document.head.appendChild(m);
-            }
-            if(!document.querySelector("meta[name=\"twitter:image\"]")){
-                var t=document.createElement("meta");
-                t.setAttribute("name","twitter:image");
-                t.setAttribute("content","https://"+location.host+"/images/6605598db05fae46b2baa3f2_The%20simple%20spiral%403-1728x958%20(1)%202.png");
-                document.head.appendChild(t);
-            }
-        })();
-    ');
-}
