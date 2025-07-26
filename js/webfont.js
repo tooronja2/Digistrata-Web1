@@ -54,6 +54,12 @@ if(!appleIcon.hasAttribute('type')){
 appleIcon.setAttribute('type','image/png');console.log('Added apple-touch-icon type');
 }else{console.log('Apple icon already has type:',appleIcon.getAttribute('type'));}
 }else{console.log('No apple-touch-icon found');}
+setTimeout(function(){
+var appleIconDelayed=document.querySelector('link[rel="apple-touch-icon"]');
+if(appleIconDelayed&&!appleIconDelayed.hasAttribute('type')){
+appleIconDelayed.setAttribute('type','image/png');console.log('DELAYED: Added apple-touch-icon type');
+}
+},500);
 var shortcutIcon=document.querySelector('link[rel="shortcut icon"]');
 if(shortcutIcon&&!shortcutIcon.hasAttribute('type')){
 shortcutIcon.setAttribute('type','image/x-icon');console.log('Added shortcut-icon type');
