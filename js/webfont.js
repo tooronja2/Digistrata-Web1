@@ -48,6 +48,10 @@ var t=document.createElement('meta');t.setAttribute('name','twitter:image');t.se
 if(!document.querySelector('meta[property="og:url"]')){
 var u=document.createElement('meta');u.setAttribute('property','og:url');u.setAttribute('content',href);document.head.appendChild(u);console.log('Added og:url');
 }
+var appleIcon=document.querySelector('link[rel="apple-touch-icon"]');
+if(appleIcon&&!appleIcon.hasAttribute('type')){
+appleIcon.setAttribute('type','image/png');console.log('Added apple-touch-icon type');
+}
 }
 console.log('IMMEDIATE FIX COMPLETE');
 }catch(e){console.error('IMMEDIATE FIX ERROR:',e);}
