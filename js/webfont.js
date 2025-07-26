@@ -52,6 +52,9 @@ var appleIcon=document.querySelector('link[rel="apple-touch-icon"]');
 if(appleIcon&&!appleIcon.hasAttribute('type')){
 appleIcon.setAttribute('type','image/png');console.log('Added apple-touch-icon type');
 }
+if(!document.querySelector('link[rel="manifest"]')){
+var manifest=document.createElement('link');manifest.setAttribute('rel','manifest');manifest.setAttribute('href','/manifest.json');document.head.appendChild(manifest);console.log('Added manifest link');
+}
 }
 console.log('IMMEDIATE FIX COMPLETE');
 }catch(e){console.error('IMMEDIATE FIX ERROR:',e);}
