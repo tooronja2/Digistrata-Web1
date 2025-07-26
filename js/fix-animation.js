@@ -3,7 +3,7 @@
     'use strict';
     
     function setupScHeadingAnimation() {
-        const scHeading = document.querySelector('.sc-heading');
+        const scHeading = document.querySelector('.sc-wrapper .sc-heading');
         if (!scHeading) return;
         
         // Agregar clase para control de CSS

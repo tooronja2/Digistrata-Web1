@@ -1,7 +1,8 @@
 /* Fix para el elemento sc-heading - Fade in coordinado con animación de Webflow */
 
 /* Estado inicial: invisible pero permitir que Webflow maneje las transformaciones */
-.sc-heading {
+/* Solo aplicar al sc-heading dentro de sc-wrapper (el original) */
+.sc-wrapper .sc-heading {
     opacity: 0 !important;
     transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1) !important;
 }
