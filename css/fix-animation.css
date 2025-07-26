@@ -1,7 +1,14 @@
-/* Fix para el elemento sc-heading - Limpieza automática de estilos problemáticos */
+/* Fix para el elemento sc-heading - Forzar estado inicial correcto */
 
-/* Solo intervenir en casos específicos donde los estilos quedan problemáticos */
-.sc-heading-fix {
-    will-change: auto !important;
-    transition: all 0.2s ease;
+/* Estado inicial: oculto hasta que la animación de scroll lo active */
+.sc-heading {
+    /* Forzar el estado inicial de la animación */
+    transform: translate3d(0px, 140%, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(10deg) skew(0deg, 0deg) !important;
+    opacity: 0 !important;
+    will-change: transform;
+}
+
+/* Solo permitir que sea visible cuando Webflow aplique el estado final */
+.sc-heading[style*="translate3d(0px, 0%, 0px)"][style*="rotateZ(0deg)"] {
+    opacity: 1 !important;
 }

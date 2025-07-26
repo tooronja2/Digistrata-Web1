@@ -1,74 +1,85 @@
-// Fix para elementos con animaciones problemáticas de Webflow
+// Fix para el elemento sc-heading que aparece antes de tiempo
 (function() {
     'use strict';
     
-    // Función para limpiar estilos problemáticos
-    function cleanupAnimationStyles() {
-        const problematicElements = document.querySelectorAll('.sc-heading[style*="will-change: transform"]');
+    function fixScHeading() {
+        const scHeading = document.querySelector('.sc-heading');
         
-        problematicElements.forEach(element => {
+        if (!scHeading) return;
+        
+        // Función para verificar si el elemento debe estar visible
+        function shouldBeVisible() {
+            const rect = scHeading.getBoundingClientRect();
+            const parentSection = scHeading.closest('.sticky-discover, .sc-content');
+            
+            if (!parentSection) return false;
+            
+            const parentRect = parentSection.getBoundingClientRect();
+            const viewportHeight = window.innerHeight;
+            
+            // El elemento debe estar visible cuando su sección padre esté en cierta posición
+            return parentRect.top <= viewportHeight * 0.7;
+        }
+        
+        // Función para manejar la visibilidad
+        function handleVisibility() {
+            const element = document.querySelector('.sc-heading');
+            if (!element) return;
+            
             const style = element.getAttribute('style') || '';
             
-            // Verificar si el elemento está en su estado final/neutro
-            const isInNeutralState = style.includes('translate3d(0px, 0%, 0px)') &&
-                                   style.includes('scale3d(1, 1, 1)') &&
-                                   style.includes('rotateZ(0deg)');
-            
-            if (isInNeutralState) {
-                // Crear un nuevo estilo sin will-change
-                const newStyle = style.replace(/will-change:\s*transform;?\s*/gi, '');
-                
-                // Solo aplicar si realmente hay un cambio
-                if (newStyle !== style) {
-                    element.setAttribute('style', newStyle);
-                    console.log('Limpieza de will-change aplicada a:', element);
+            // Si tiene estilos problemáticos de transform inline
+            if (style.includes('will-change: transform') && style.includes('translate3d(0px, 0%, 0px)')) {
+                if (shouldBeVisible()) {
+                    // Permitir que se vea y limpiar will-change
+                    element.style.willChange = 'auto';
+                } else {
+                    // Ocultarlo hasta que sea su momento
+                    element.style.opacity = '0';
+                    element.style.visibility = 'hidden';
                 }
+            } else if (shouldBeVisible()) {
+                // Restaurar visibilidad cuando sea su momento
+                element.style.opacity = '';
+                element.style.visibility = '';
             }
-        });
-    }
-    
-    // Función para observar cambios en los elementos
-    function setupObserver() {
+        }
+        
+        // Observar cambios en los estilos
         const observer = new MutationObserver(function(mutations) {
             mutations.forEach(function(mutation) {
-                if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
-                    // Pequeño delay para permitir que Webflow termine su animación
-                    setTimeout(cleanupAnimationStyles, 100);
+                if (mutation.target.classList.contains('sc-heading') && 
+                    mutation.attributeName === 'style') {
+                    setTimeout(handleVisibility, 50);
                 }
             });
         });
         
-        // Observar cambios en todo el documento
-        observer.observe(document.body, {
+        // Observar el elemento sc-heading
+        observer.observe(scHeading, {
             attributes: true,
-            attributeFilter: ['style'],
-            subtree: true
+            attributeFilter: ['style']
         });
-    }
-    
-    // Función para limpiar al hacer scroll (respaldo)
-    function setupScrollCleanup() {
-        let scrollTimeout;
         
+        // También observar en scroll
+        let scrollTimeout;
         window.addEventListener('scroll', function() {
             clearTimeout(scrollTimeout);
-            scrollTimeout = setTimeout(cleanupAnimationStyles, 300);
+            scrollTimeout = setTimeout(handleVisibility, 16);
         });
+        
+        // Verificación inicial
+        handleVisibility();
     }
     
-    // Inicializar cuando el DOM esté listo
+    // Inicializar
     if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', function() {
-            setupObserver();
-            setupScrollCleanup();
-            // Limpieza inicial
-            setTimeout(cleanupAnimationStyles, 1000);
-        });
+        document.addEventListener('DOMContentLoaded', fixScHeading);
     } else {
-        setupObserver();
-        setupScrollCleanup();
-        // Limpieza inicial
-        setTimeout(cleanupAnimationStyles, 1000);
+        fixScHeading();
     }
+    
+    // También ejecutar después de que Webflow se haya inicializado
+    setTimeout(fixScHeading, 1000);
     
 })();
