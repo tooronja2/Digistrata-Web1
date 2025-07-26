@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Missing Property Diagnostic</title>
+    <script src="/js/webfont.js"></script>
+    <style>
+        body { font-family: monospace; line-height: 1.6; margin: 20px; }
+        .log { background: #f5f5f5; padding: 10px; margin: 10px 0; border-left: 4px solid #007bff; }
+        .error { border-left-color: #dc3545; background: #fff5f5; }
+        .success { border-left-color: #28a745; background: #f8fff8; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Real-Time Missing Property Diagnostic</h1>
+    <div id="log">Starting diagnostic...</div>
+    
+    <script>
+        var logDiv = document.getElementById('log');
+        
+        function log(message, type = 'log') {
+            var div = document.createElement('div');
+            div.className = 'log ' + type;
+            div.innerHTML = new Date().toLocaleTimeString() + ': ' + message;
+            logDiv.appendChild(div);
+        }
+        
+        // Real-time monitoring
+        setTimeout(function() {
+            log('=== IMMEDIATE DIAGNOSTIC STARTING ===');
+            
+            // Check apple-touch-icon
+            var appleIcon = document.querySelector('link[rel="apple-touch-icon"]');
+            if (appleIcon) {
+                var hasType = appleIcon.hasAttribute('type');
+                log('🍎 Apple-touch-icon found: ' + appleIcon.outerHTML);
+                log('🍎 Has type attribute: ' + hasType + (hasType ? ' (value: ' + appleIcon.getAttribute('type') + ')' : ''), hasType ? 'success' : 'error');
+            } else {
+                log('🍎 Apple-touch-icon NOT FOUND', 'error');
+            }
+            
+            // Check shortcut icon
+            var shortcutIcon = document.querySelector('link[rel="shortcut icon"]');
+            if (shortcutIcon) {
+                var hasType = shortcutIcon.hasAttribute('type');
+                log('🔗 Shortcut icon found');
+                log('🔗 Has type attribute: ' + hasType + (hasType ? ' (value: ' + shortcutIcon.getAttribute('type') + ')' : ''), hasType ? 'success' : 'error');
+            } else {
+                log('🔗 Shortcut icon NOT FOUND', 'error');
+            }
+            
+            // Check manifest
+            var manifest = document.querySelector('link[rel="manifest"]');
+            log('📱 Manifest link: ' + (manifest ? 'FOUND' : 'NOT FOUND'), manifest ? 'success' : 'error');
+            
+            // Check meta properties
+            var ogImage = document.querySelector('meta[property="og:image"]');
+            log('📊 OG Image meta: ' + (ogImage ? 'FOUND' : 'NOT FOUND'), ogImage ? 'success' : 'error');
+            
+            var twitterImage = document.querySelector('meta[name="twitter:image"]');
+            log('🐦 Twitter Image meta: ' + (twitterImage ? 'FOUND' : 'NOT FOUND'), twitterImage ? 'success' : 'error');
+            
+            // Check forms
+            var forms = document.querySelectorAll('form');
+            var formsWithAction = document.querySelectorAll('form[action]');
+            log('📝 Forms: ' + forms.length + ' total, ' + formsWithAction.length + ' with action', 
+                forms.length === formsWithAction.length ? 'success' : 'error');
+            
+            // Check email inputs
+            var emailInputs = document.querySelectorAll('input[type="email"]');
+            var allMailInputs = document.querySelectorAll('input[name*="mail"], input[name*="Mail"]');
+            log('📧 Email inputs: ' + emailInputs.length + ' correct type, ' + allMailInputs.length + ' total mail inputs',
+                emailInputs.length >= allMailInputs.length ? 'success' : 'error');
+            
+            log('=== DIAGNOSTIC COMPLETE ===');
+            
+        }, 2000);
+        
+        // Monitor console for webfont.js messages
+        var originalLog = console.log;
+        console.log = function() {
+            originalLog.apply(console, arguments);
+            if (arguments[0] && typeof arguments[0] === 'string' && arguments[0].includes('FIX')) {
+                log('🔧 WebFont Fix: ' + Array.prototype.join.call(arguments, ' '), 'success');
+            }
+        };
+        
+    </script>
+</body>
+</html>
