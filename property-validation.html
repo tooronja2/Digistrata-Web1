@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Property Validation Test</title>
+    <script src="/js/webfont.js"></script>
+</head>
+<body>
+    <h1>🔍 Property Validation Results</h1>
+    <div id="validation-results">Loading validation...</div>
+    
+    <script>
+        setTimeout(function() {
+            var results = [];
+            
+            // Check apple-touch-icon type attribute
+            var appleIcon = document.querySelector('link[rel="apple-touch-icon"]');
+            results.push('Apple Touch Icon Type: ' + (appleIcon && appleIcon.hasAttribute('type') ? '✅ PRESENT - ' + appleIcon.getAttribute('type') : '❌ MISSING'));
+            
+            // Check meta properties
+            var ogImage = document.querySelector('meta[property="og:image"]');
+            results.push('OG Image: ' + (ogImage ? '✅ PRESENT' : '❌ MISSING'));
+            
+            var twImage = document.querySelector('meta[name="twitter:image"]');
+            results.push('Twitter Image: ' + (twImage ? '✅ PRESENT' : '❌ MISSING'));
+            
+            // Check all link elements for required attributes
+            var links = document.querySelectorAll('link');
+            var linkIssues = [];
+            links.forEach(function(link, index) {
+                var rel = link.getAttribute('rel');
+                var href = link.getAttribute('href');
+                var hasType = link.hasAttribute('type');
+                
+                if (!rel) linkIssues.push('Link ' + index + ': Missing rel attribute');
+                if (!href) linkIssues.push('Link ' + index + ': Missing href attribute');
+                if (rel === 'apple-touch-icon' && !hasType) linkIssues.push('Link ' + index + ': Apple touch icon missing type');
+            });
+            
+            results.push('Link Elements Check: ' + (linkIssues.length === 0 ? '✅ ALL VALID' : '❌ Issues: ' + linkIssues.join(', ')));
+            
+            // Check form properties  
+            var forms = document.querySelectorAll('form');
+            var formIssues = [];
+            forms.forEach(function(form, index) {
+                if (!form.hasAttribute('action')) formIssues.push('Form ' + index + ': Missing action');
+                if (form.getAttribute('method') === 'get') formIssues.push('Form ' + index + ': Should use POST method');
+            });
+            
+            results.push('Form Validation: ' + (formIssues.length === 0 ? '✅ ALL VALID' : '❌ Issues: ' + formIssues.join(', ')));
+            
+            document.getElementById('validation-results').innerHTML = 
+                '<h2>Validation Results:</h2><pre>' + results.join('\n') + '</pre>';
+                
+        }, 3000);
+    </script>
+</body>
+</html>

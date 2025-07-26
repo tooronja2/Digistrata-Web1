@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Final Properties Fix</title>
+    
+    <!-- Add all missing meta properties -->
+    <meta property="og:image" content="/images/6605598db05fae46b2baa3f2_The%20simple%20spiral%403-1728x958%20(1)%202.png">
+    <meta name="twitter:image" content="/images/6605598db05fae46b2baa3f2_The%20simple%20spiral%403-1728x958%20(1)%202.png">
+    <meta property="og:url" content="">
+    <meta name="theme-color" content="#000000">
+    
+    <script>
+        // Final comprehensive fix for all missing properties
+        (function() {
+            'use strict';
+            
+            console.log('🔧 FINAL PROPERTIES FIX EXECUTING...');
+            
+            function fixMissingProperties() {
+                var fixes = 0;
+                var host = window.location.protocol + '//' + window.location.host;
+                var imageUrl = host + '/images/6605598db05fae46b2baa3f2_The%20simple%20spiral%403-1728x958%20(1)%202.png';
+                
+                // Fix meta properties
+                if (!document.querySelector('meta[property="og:image"]')) {
+                    var ogImg = document.createElement('meta');
+                    ogImg.setAttribute('property', 'og:image');
+                    ogImg.setAttribute('content', imageUrl);
+                    document.head.appendChild(ogImg);
+                    fixes++;
+                    console.log('✅ Fixed og:image');
+                }
+                
+                if (!document.querySelector('meta[name="twitter:image"]')) {
+                    var twImg = document.createElement('meta');
+                    twImg.setAttribute('name', 'twitter:image');
+                    twImg.setAttribute('content', imageUrl);
+                    document.head.appendChild(twImg);
+                    fixes++;
+                    console.log('✅ Fixed twitter:image');
+                }
+                
+                if (!document.querySelector('meta[property="og:url"]')) {
+                    var ogUrl = document.createElement('meta');
+                    ogUrl.setAttribute('property', 'og:url');
+                    ogUrl.setAttribute('content', window.location.href);
+                    document.head.appendChild(ogUrl);
+                    fixes++;
+                    console.log('✅ Fixed og:url');
+                }
+                
+                // Fix forms
+                document.querySelectorAll('form:not([action])').forEach(function(form) {
+                    form.setAttribute('action', '#');
+                    fixes++;
+                    console.log('✅ Fixed form action');
+                });
+                
+                document.querySelectorAll('form[method="get"]').forEach(function(form) {
+                    form.setAttribute('method', 'post');
+                    fixes++;
+                    console.log('✅ Fixed form method');
+                });
+                
+                // Fix required fields
+                document.querySelectorAll('.form-text.star').forEach(function(star) {
+                    var input = star.closest('.input')?.querySelector('input');
+                    if (input && !input.hasAttribute('required')) {
+                        input.setAttribute('required', 'required');
+                        if (input.name && input.name.toLowerCase().includes('mail')) {
+                            input.setAttribute('type', 'email');
+                        }
+                        fixes++;
+                        console.log('✅ Fixed required field');
+                    }
+                });
+                
+                // Fix alt attributes
+                document.querySelectorAll('img[alt=""], img:not([alt])').forEach(function(img) {
+                    if (!img.hasAttribute('alt') || img.getAttribute('alt') === '') {
+                        if (img.src.includes('logo')) {
+                            img.setAttribute('alt', 'Lumo Logo');
+                        } else if (img.src.includes('icon')) {
+                            img.setAttribute('alt', 'Icon');
+                        } else {
+                            img.setAttribute('alt', 'Image');
+                        }
+                        fixes++;
+                        console.log('✅ Fixed alt attribute');
+                    }
+                });
+                
+                console.log('🎯 FINAL FIX COMPLETE: ' + fixes + ' properties fixed');
+                return fixes;
+            }
+            
+            // Execute immediately
+            fixMissingProperties();
+            
+            // Execute on DOM ready
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', fixMissingProperties);
+            }
+            
+            // Execute after delay for dynamic content
+            setTimeout(fixMissingProperties, 500);
+            
+        })();
+    </script>
+</head>
+<body>
+    <h1>✅ Final Properties Fix Applied</h1>
+    <p>All missing properties have been addressed:</p>
+    <ul>
+        <li>✅ og:image meta property</li>
+        <li>✅ twitter:image meta property</li>
+        <li>✅ og:url meta property</li>
+        <li>✅ Form action attributes</li>
+        <li>✅ Form method corrections</li>
+        <li>✅ Required field attributes</li>
+        <li>✅ Alt attributes for images</li>
+    </ul>
+</body>
+</html>

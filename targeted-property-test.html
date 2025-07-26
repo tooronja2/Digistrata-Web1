@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Targeted Property Test</title>
+    <script src="/js/webfont.js"></script>
+    <style>
+        .result { padding: 10px; margin: 5px; border: 1px solid #ccc; }
+        .pass { background: #d4edda; }
+        .fail { background: #f8d7da; }
+    </style>
+</head>
+<body>
+    <h1>🎯 Targeted Property Validation</h1>
+    <div id="results">Loading...</div>
+    
+    <script>
+        setTimeout(function() {
+            var html = '<h2>Detailed Property Analysis:</h2>';
+            
+            // Check apple-touch-icon specifically
+            var appleIcon = document.querySelector('link[rel="apple-touch-icon"]');
+            html += '<div class="result ' + (appleIcon ? 'pass' : 'fail') + '">';
+            html += '📱 Apple Touch Icon Element: ' + (appleIcon ? 'EXISTS' : 'MISSING');
+            if (appleIcon) {
+                html += '<br>↳ href: ' + appleIcon.getAttribute('href');
+                html += '<br>↳ type: ' + (appleIcon.getAttribute('type') || 'MISSING');
+                html += '<br>↳ Complete element: ' + appleIcon.outerHTML.substring(0, 150) + '...';
+            }
+            html += '</div>';
+            
+            // Check shortcut icon
+            var shortcutIcon = document.querySelector('link[rel="shortcut icon"]');
+            html += '<div class="result ' + (shortcutIcon ? 'pass' : 'fail') + '">';
+            html += '🔗 Shortcut Icon Element: ' + (shortcutIcon ? 'EXISTS' : 'MISSING');
+            if (shortcutIcon) {
+                html += '<br>↳ href: ' + shortcutIcon.getAttribute('href');
+                html += '<br>↳ type: ' + (shortcutIcon.getAttribute('type') || 'MISSING');
+            }
+            html += '</div>';
+            
+            // Check manifest
+            var manifest = document.querySelector('link[rel="manifest"]');
+            html += '<div class="result ' + (manifest ? 'pass' : 'fail') + '">';
+            html += '📱 Web App Manifest: ' + (manifest ? 'EXISTS' : 'MISSING');
+            if (manifest) {
+                html += '<br>↳ href: ' + manifest.getAttribute('href');
+            }
+            html += '</div>';
+            
+            // Check meta properties
+            var ogImage = document.querySelector('meta[property="og:image"]');
+            html += '<div class="result ' + (ogImage ? 'pass' : 'fail') + '">';
+            html += '📊 OG Image Meta: ' + (ogImage ? 'EXISTS' : 'MISSING');
+            if (ogImage) {
+                html += '<br>↳ content: ' + ogImage.getAttribute('content').substring(0, 100) + '...';
+            }
+            html += '</div>';
+            
+            // Check email inputs
+            var emailInputs = document.querySelectorAll('input[type="email"]');
+            var mailInputs = document.querySelectorAll('input[name*="mail"], input[name*="Mail"]');
+            html += '<div class="result ' + (emailInputs.length > 0 ? 'pass' : 'fail') + '">';
+            html += '📧 Email Input Types: ' + emailInputs.length + ' found (expected: ' + mailInputs.length + ')';
+            html += '</div>';
+            
+            // Check form actions
+            var forms = document.querySelectorAll('form');
+            var formsWithAction = document.querySelectorAll('form[action]');
+            html += '<div class="result ' + (forms.length === formsWithAction.length ? 'pass' : 'fail') + '">';
+            html += '📝 Form Actions: ' + formsWithAction.length + '/' + forms.length + ' forms have action attribute';
+            html += '</div>';
+            
+            document.getElementById('results').innerHTML = html;
+            
+        }, 3000);
+    </script>
+</body>
+</html>

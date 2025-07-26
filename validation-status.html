@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Validation Status Check</title>
+    <script src="/js/webfont.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .status { padding: 15px; margin: 10px 0; border-radius: 5px; }
+        .pass { background: #d4edda; border: 1px solid #c3e6cb; color: #155724; }
+        .fail { background: #f8d7da; border: 1px solid #f5c6cb; color: #721c24; }
+        .info { background: #d1ecf1; border: 1px solid #bee5eb; color: #0c5460; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Comprehensive Validation Status Check</h1>
+    <div id="status">Loading validation status...</div>
+    
+    <script>
+        setTimeout(function() {
+            var html = '';
+            
+            // Check the exact missing property issue
+            var appleIcon = document.querySelector('link[rel="apple-touch-icon"]');
+            var appleIconStatus = appleIcon && appleIcon.hasAttribute('type');
+            
+            html += '<div class="status ' + (appleIconStatus ? 'pass' : 'fail') + '">';
+            html += '<h2>🍎 Apple Touch Icon Type Attribute</h2>';
+            html += '<p><strong>Status:</strong> ' + (appleIconStatus ? 'RESOLVED ✅' : 'MISSING ❌') + '</p>';
+            if (appleIcon) {
+                html += '<p><strong>Current element:</strong> ' + appleIcon.outerHTML + '</p>';
+                html += '<p><strong>Type value:</strong> ' + (appleIcon.getAttribute('type') || 'Not set') + '</p>';
+            } else {
+                html += '<p><strong>Element:</strong> Not found</p>';
+            }
+            html += '<p><strong>Validation context:</strong> W3C Nu HTML Checker (HTML5 validation)</p>';
+            html += '<p><strong>Required:</strong> type="image/png" attribute on link[rel="apple-touch-icon"]</p>';
+            html += '</div>';
+            
+            // Check other common properties
+            var ogImage = document.querySelector('meta[property="og:image"]');
+            html += '<div class="status ' + (ogImage ? 'pass' : 'fail') + '">';
+            html += '<h3>📊 Open Graph Image</h3>';
+            html += '<p>Status: ' + (ogImage ? 'Present ✅' : 'Missing ❌') + '</p>';
+            html += '</div>';
+            
+            var manifest = document.querySelector('link[rel="manifest"]');
+            html += '<div class="status ' + (manifest ? 'pass' : 'fail') + '">';
+            html += '<h3>📱 Web App Manifest</h3>';
+            html += '<p>Status: ' + (manifest ? 'Present ✅' : 'Missing ❌') + '</p>';
+            html += '</div>';
+            
+            var forms = document.querySelectorAll('form');
+            var formsWithAction = document.querySelectorAll('form[action]');
+            html += '<div class="status ' + (forms.length === formsWithAction.length ? 'pass' : 'fail') + '">';
+            html += '<h3>📝 Form Action Attributes</h3>';
+            html += '<p>Status: ' + formsWithAction.length + '/' + forms.length + ' forms have action attributes</p>';
+            html += '</div>';
+            
+            // Summary
+            var totalIssues = 4;
+            var resolvedIssues = 0;
+            if (appleIconStatus) resolvedIssues++;
+            if (ogImage) resolvedIssues++;
+            if (manifest) resolvedIssues++;
+            if (forms.length === formsWithAction.length) resolvedIssues++;
+            
+            html = '<div class="status info"><h2>📈 Overall Status: ' + resolvedIssues + '/' + totalIssues + ' Properties Resolved</h2></div>' + html;
+            
+            if (!appleIconStatus) {
+                html += '<div class="status fail">';
+                html += '<h2>🔧 Immediate Action Required</h2>';
+                html += '<p>The apple-touch-icon is still missing the type attribute. This is the primary "Missing property" validation error.</p>';
+                html += '<p><strong>Required fix:</strong> Add type="image/png" to the apple-touch-icon link element.</p>';
+                html += '</div>';
+            }
+            
+            document.getElementById('status').innerHTML = html;
+            
+        }, 3000);
+    </script>
+</body>
+</html>

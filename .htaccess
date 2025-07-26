@@ -1,0 +1,9 @@
+RewriteEngine On
+
+# Redirect utility pages to correct folder structure
+RewriteRule ^utility-pages/terms/?$ /utility-pages_terms/ [R=301,L]
+RewriteRule ^utility-pages/licenses/?$ /utility-pages_licenses/ [L]
+
+# Handle missing trailing slashes
+RewriteRule ^utility-pages_terms$ /utility-pages_terms/ [R=301,L]
+RewriteRule ^utility-pages_licenses$ /utility-pages_licenses/ [R=301,L]

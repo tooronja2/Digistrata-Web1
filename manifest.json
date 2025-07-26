@@ -1,0 +1,27 @@
+{
+  "name": "Lumo - Digital Agency Template",
+  "short_name": "Lumo",
+  "description": "Digital agency website template with modern design",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/images/6605598db05fae46b2baa419_logo-lumo.svg",
+      "sizes": "192x192",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "https://cdn.prod.website-files.com/65b393f03e5b85e23fd29892/65ba72c3557d35e3552c8295_Group%201000003354.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "apple touch icon"
+    }
+  ],
+  "categories": ["business", "productivity"],
+  "lang": "en",
+  "dir": "ltr"
+}

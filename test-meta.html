@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Test Meta Injection</title>
+    <script src="/js/webfont.js"></script>
+</head>
+<body>
+    <h1>Test Page - Meta Injection Verification</h1>
+    <script>
+        setTimeout(function() {
+            console.log('=== META CHECK ===');
+            var ogImage = document.querySelector('meta[property="og:image"]');
+            var twImage = document.querySelector('meta[name="twitter:image"]');
+            var ogUrl = document.querySelector('meta[property="og:url"]');
+            
+            console.log('og:image:', ogImage ? ogImage.content : 'MISSING');
+            console.log('twitter:image:', twImage ? twImage.content : 'MISSING');
+            console.log('og:url:', ogUrl ? ogUrl.content : 'MISSING');
+            
+            document.body.innerHTML += '<h2>Meta Tag Status:</h2>';
+            document.body.innerHTML += '<p>og:image: ' + (ogImage ? '✅ Present' : '❌ MISSING') + '</p>';
+            document.body.innerHTML += '<p>twitter:image: ' + (twImage ? '✅ Present' : '❌ MISSING') + '</p>';
+            document.body.innerHTML += '<p>og:url: ' + (ogUrl ? '✅ Present' : '❌ MISSING') + '</p>';
+        }, 2000);
+    </script>
+</body>
+</html>

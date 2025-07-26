@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>Missing Properties Status Report</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="/js/webfont.js"></script>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        .status { padding: 10px; margin: 5px 0; border-radius: 5px; }
+        .found { background: #d4edda; color: #155724; }
+        .missing { background: #f8d7da; color: #721c24; }
+        .fixed { background: #fff3cd; color: #856404; }
+    </style>
+</head>
+<body>
+    <h1>🔍 Missing Properties Status Report</h1>
+    <div id="report">Analyzing...</div>
+    
+    <script>
+        function checkProperty(selector, name, type = 'meta') {
+            var element = document.querySelector(selector);
+            return {
+                name: name,
+                found: !!element,
+                content: element ? element.getAttribute('content') || element.value || 'Present' : null,
+                element: element
+            };
+        }
+        
+        function generateReport() {
+            var checks = [
+                // Meta Properties
+                checkProperty('meta[property="og:image"]', 'Open Graph Image'),
+                checkProperty('meta[name="twitter:image"]', 'Twitter Card Image'),
+                checkProperty('meta[property="og:url"]', 'Open Graph URL'),
+                checkProperty('meta[property="og:type"]', 'Open Graph Type'),
+                checkProperty('meta[name="theme-color"]', 'Theme Color'),
+                checkProperty('meta[name="description"]', 'Meta Description'),
+                
+                // Form Properties
+                checkProperty('form[action]', 'Form Action Attribute', 'form'),
+                checkProperty('input[required]', 'Required Form Fields', 'input'),
+                checkProperty('input[type="email"]', 'Email Input Type', 'input'),
+                
+                // Image Properties  
+                checkProperty('img[alt]', 'Image Alt Attributes', 'img'),
+                
+                // Accessibility
+                checkProperty('html[lang]', 'HTML Lang Attribute', 'html'),
+            ];
+            
+            var html = '<h2>📊 Property Check Results</h2>';
+            
+            checks.forEach(function(check) {
+                var className = check.found ? 'found' : 'missing';
+                var icon = check.found ? '✅' : '❌';
+                var content = check.content ? ' - ' + check.content.substring(0, 60) + '...' : '';
+                
+                html += '<div class="status ' + className + '">' + 
+                       icon + ' <strong>' + check.name + '</strong>' + content + '</div>';
+            });
+            
+            // Additional checks
+            html += '<h2>🔧 Form Validation Status</h2>';
+            var forms = document.querySelectorAll('form');
+            html += '<div class="status ' + (forms.length > 0 ? 'found' : 'missing') + '">';
+            html += forms.length > 0 ? '✅ Found ' + forms.length + ' forms' : '❌ No forms found';
+            html += '</div>';
+            
+            forms.forEach(function(form, index) {
+                var hasAction = form.hasAttribute('action');
+                var method = form.getAttribute('method') || 'GET';
+                html += '<div class="status ' + (hasAction ? 'found' : 'missing') + '">';
+                html += (hasAction ? '✅' : '❌') + ' Form ' + (index + 1) + ' - Action: ' + 
+                       (hasAction ? form.getAttribute('action') : 'MISSING') + ', Method: ' + method;
+                html += '</div>';
+            });
+            
+            // Required fields check
+            html += '<h2>📝 Required Fields Status</h2>';
+            var requiredFields = document.querySelectorAll('input[required]');
+            var starFields = document.querySelectorAll('.form-text.star');
+            
+            html += '<div class="status ' + (requiredFields.length > 0 ? 'found' : 'missing') + '">';
+            html += '✅ Found ' + requiredFields.length + ' required fields (should match ' + starFields.length + ' starred fields)';
+            html += '</div>';
+            
+            document.getElementById('report').innerHTML = html;
+        }
+        
+        // Run report after everything loads
+        setTimeout(generateReport, 3000);
+        
+    </script>
+</body>
+</html>
