@@ -1,0 +1,4 @@
+/* Ocultar badge de Webflow */
+.w-webflow-badge {
+  display: none !important;
+}
