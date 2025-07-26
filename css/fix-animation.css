@@ -1,34 +1,7 @@
-/* Fix para el elemento sc-heading que queda con estilos de animación problemáticos */
+/* Fix para el elemento sc-heading - Limpieza automática de estilos problemáticos */
 
-.sc-heading {
-    /* Resetear las transformaciones problemáticas */
-    transform: none !important;
+/* Solo intervenir en casos específicos donde los estilos quedan problemáticos */
+.sc-heading-fix {
     will-change: auto !important;
-    
-    /* Asegurar que el texto se vea correctamente */
-    opacity: 1 !important;
-    
-    /* Opcional: Agregar una transición suave para futuros cambios */
-    transition: transform 0.3s ease, opacity 0.3s ease;
-}
-
-/* Si quieres mantener alguna animación sutil, puedes usar esto en su lugar: */
-/*
-.sc-heading {
-    transform: translate3d(0px, 0px, 0px) scale3d(1, 1, 1) rotateX(0deg) rotateY(0deg) rotateZ(0deg) skew(0deg, 0deg) !important;
-    will-change: auto !important;
-    transform-style: preserve-3d;
-    opacity: 1 !important;
-    transition: all 0.3s ease;
-}
-*/
-
-/* También puedes aplicar esto a todos los elementos con problemas similares */
-[style*="will-change: transform"] {
-    will-change: auto !important;
-}
-
-/* Si hay otros elementos con el mismo problema */
-.sc-heading[style] {
-    transform: none !important;
+    transition: all 0.2s ease;
 }
