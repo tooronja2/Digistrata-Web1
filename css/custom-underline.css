@@ -2,4 +2,71 @@
 .fb-about img {
     color: inherit;
     filter: brightness(1.5);
+    width: 20px;
+    height: 20px;
+}
+
+/* Estilos para los elementos social */
+.social {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 15px;
+}
+
+.social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.social-link img {
+    width: 20px;
+    height: 20px;
+}
+
+/* Estilos específicos para el hero */
+.hero-wrapper .social {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.hero-wrapper .social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 52px;
+    height: 52px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    transition: background-color 0.3s ease;
+}
+
+.hero-wrapper .social-link img {
+    width: 24px;
+    height: 24px;
+}
+
+.hero-wrapper .social-link:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Estilos específicos para la barra de navegación */
+.navbar .social {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.navbar .social-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.navbar .social-link img {
+    width: 20px;
+    height: 20px;
 }
